@@ -1,0 +1,53 @@
+- var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+
+// Player object
+var player = {
+	x: canvas.width/2,
+	y: canvas.height-30,
+	radius: 10,
+	speed: 5,
+	color: "blue",
+	draw: function() {
+		ctx.beginPath();
+		ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
+		ctx.fillStyle = this.color;
+		ctx.fill();
+		ctx.closePath();
+	},
+	moveLeft: function() {
+		if (this.x - this.radius > 0) {
+			this.x -= this.speed;
+		}
+	},
+	moveRight: function() {
+		if (this.x + this.radius < canvas.width) {
+			this.x += this.speed;
+		}
+	}
+};
+
+// Key listener for player movement
+document.addEventListener("keydown", function(event) {
+	if (event.key === "ArrowLeft") {
+		player.moveLeft();
+	}
+	else if (event.key === "ArrowRight") {
+		player.moveRight();
+	}
+});
+
+// Game loop
+function draw() {
+	// Clear canvas
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+	// Draw player
+	player.draw();
+
+	// Request next animation frame
+	requestAnimationFrame(draw);
+}
+
+// Start game loop
+requestAnimationFrame(draw);
